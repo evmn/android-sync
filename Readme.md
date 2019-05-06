@@ -6,8 +6,8 @@
 backup=backup_$(date +"%Y%m%d")
 # Add remote directory to the following array
 declare -a remote_dirs=("sdcard/inshot/"
-		                "sdcard/DCIM/"
-        		        "sdcard/Pictures/")
+						"sdcard/DCIM/"
+						"sdcard/Pictures/")
 
 for dir in "${remote_dirs[@]}"
 do
@@ -22,10 +22,10 @@ sed -i '/\/\./d' $backup
 while IFS= read -r remote
 do
 	# local directory structure is the same as remote directory structure
-    local=$(echo "$remote" | awk -F"/" '{OFS="/"; $1=$NF="";  print}' | sed 's/^\///')
+	local=$(echo "$remote" | awk -F"/" '{OFS="/"; $1=$NF="";  print}' | sed 's/^\///')
 	echo "src: $remote"
-    echo "adb pull \"$remote\" \"$local\"" | bash
-    echo "adb shell rm \"$remote\"" | bash
+	echo "adb pull \"$remote\" \"$local\"" | bash
+	echo "adb shell rm \"$remote\"" | bash
 done < $backup
 ```
 
