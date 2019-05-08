@@ -1,26 +1,24 @@
 #/bin/bash
 
-backup=backup_$(date +"%Y%m%d")
-# Add remote directory to the following array
 declare -a remote_dirs=("sdcard/inshot/"
-						"sdcard/DCIM/"
-						"sdcard/Pictures/")
+			"sdcard/DCIM/"
+			"sdcard/Pictures/")
 
+bak=bak_$(date +"%Y%m%d")
 for dir in "${remote_dirs[@]}"
 do
-	#adb shell du -a "$dir" | awk '/\.(png|PNG|jpg|JPG|mp4|MP4)$/{print $2}' >> $backup
-	adb shell find "$dir" -type f \( -iname "*.mp4" -or -iname "*.jpg" -or -iname "*.png" \) >> $backup
+#	#adb shell du -a "$dir" | awk '/\.(png|PNG|jpg|JPG|mp4|MP4)$/{print $2}' >> $bak
+	adb shell find "$dir" -type f \( -iname "*.mp4" -or -iname "*.jpg" -or -iname "*.png" \) >> $bak
 done
 
-#cp $backup bak
-# Don't sync hidden folder
-sed -i '/\/\./d' $backup
+#cp $bak bak
+sed -i '/\/\./d' $bak
 
 while IFS= read -r remote
 do
-	# local directory structure is the same as remote directory structure
 	local=$(echo "$remote" | awk -F"/" '{OFS="/"; $1=$NF="";  print}' | sed 's/^\///')
-	echo "src: $remote"
+	echo "adb pull \"$remote\" \"$local\""
 	echo "adb pull \"$remote\" \"$local\"" | bash
+	echo "adb shell rm \"$remote\""
 	echo "adb shell rm \"$remote\"" | bash
-done < $backup
+done < $bak
