@@ -8,7 +8,7 @@ bak=wx_$(date +"%Y%m%d")
 for dir in "${remote_dirs[@]}"
 do
 #       only pull files downloaded in 30 minutes
-	adb shell find "$dir" -type f -type f -cmin -30 >> $bak
+	adb shell find "$dir" -type f -cmin -30 >> $bak
 done
 
 #cp $bak bak
