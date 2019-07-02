@@ -2,7 +2,8 @@
 #
 # Put this file to ~/bin/ dir, so you can pull wechat file from any directory
 #
-declare -a remote_dirs=("sdcard/tencent/MicroMsg/Download/")
+declare -a remote_dirs=("sdcard/tencent/MicroMsg/Download/"
+                        "sdcard/tencent/MicroMsg/Weixin/")
 
 bak=wx_$(date +"%Y%m%d")
 for dir in "${remote_dirs[@]}"
