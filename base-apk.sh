@@ -8,7 +8,10 @@ adb shell find data/app -name "base.apk" > $bak
 while IFS= read -r remote
 do
     local=$(echo "$remote" | cut -d "/" -f 3 | cut -d "-" -f 1)/
-    echo "mkdir $local"
+    if [ ! -d "$local" ]; then
+        echo "mkdir $local"
+        echo "mkdir $local" | base
+    fi
     echo "adb pull $remote $local"
     echo "adb pull $remote ${local}base.apk" | bash
 done < $bak
