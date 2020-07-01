@@ -10,7 +10,7 @@ do
     local=$(echo "$remote" | cut -d "/" -f 3 | cut -d "-" -f 1)/
     if [ ! -d "$local" ]; then
         echo "mkdir $local"
-        echo "mkdir $local" | base
+        echo "mkdir $local" | bash
     fi
     echo "adb pull $remote $local"
     echo "adb pull $remote ${local}base.apk" | bash
