@@ -2,30 +2,33 @@
 
 ```sh
 #/bin/bash
+#
+# Put this file to ~/bin/ dir, so you can pull wechat file from any directory
+#
+declare -a remote_dirs=("sdcard/tencent/MicroMsg/Download/"
+                        "sdcard/tencent/MicroMsg/Weixin/")
 
-backup=backup_$(date +"%Y%m%d")
-# Add remote directory to the following array
-declare -a remote_dirs=("sdcard/inshot/"
-						"sdcard/DCIM/"
-						"sdcard/Pictures/")
-
+bak=wx_$(date +"%Y%m%d")
 for dir in "${remote_dirs[@]}"
 do
-	#adb shell du -a "$dir" | awk '/\.(png|PNG|jpg|JPG|mp4|MP4)$/{print $2}' >> $backup
-	adb shell find "$dir" -type f \( -iname "*.mp4" -or -iname "*.jpg" -or -iname "*.png" \) >> $backup
+#       only pull files downloaded in 30 minutes
+	adb shell find "$dir" -type f -cmin -30 >> $bak
 done
 
-#cp $backup bak
-# Don't sync hidden folder
-sed -i '/\/\./d' $backup
+#cp $bak bak
+sed -i '/\/\./d' $bak
 
 while IFS= read -r remote
 do
-	# local directory structure is the same as remote directory structure
-	local=$(echo "$remote" | awk -F"/" '{OFS="/"; $1=$NF="";  print}' | sed 's/^\///')
-	echo "src: $remote"
-	echo "adb pull \"$remote\" \"$local\"" | bash
-	echo "adb shell rm \"$remote\"" | bash
-done < $backup
+#	local=$(echo "$remote" | awk -F"/" '{OFS="/"; $1=$NF="";  print}' | sed 's/^\///')
+
+#	echo "adb pull \"$remote\" \"$local\""
+#	echo "adb pull \"$remote\" \"$local\"" | bash
+	echo "adb pull \"$remote\" ./"
+	echo "adb pull \"$remote\" ./" | bash
+
+#	echo "adb shell rm \"$remote\""
+#	echo "adb shell rm \"$remote\"" | bash
+done < $bak
 ```
 
