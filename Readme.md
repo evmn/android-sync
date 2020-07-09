@@ -1,3 +1,6 @@
+# Sync Android Data to Your Hard Driver
+
+```sh
 #/bin/bash
 
 declare -a remote_dirs=("sdcard/inshot/"
@@ -33,3 +36,4 @@ do
 #	echo "adb shell rm \"$remote\""
 #	echo "adb shell rm \"$remote\"" | bash
 done < $bak
+```
