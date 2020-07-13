@@ -10,7 +10,7 @@ bak=bak_$(date +"%Y%m%d-%H%M%S")
 for dir in "${remote_dirs[@]}"
 do
 #	adb shell du -a "$dir" | awk '/\.(png|PNG|jpg|JPG|mp4|MP4)$/{print $2}' >> $bak
-	adb shell find "$dir" -type f \( -iname "*.mp4" -or -iname "*.jpg" -or -iname "*.png" \) > $bak
+	adb shell find "$dir" -type f -iname "*.mp4" -or -iname "*.jpg" -or -iname "*.png" > $bak
 done
 
 sed -i '/\/\./d' $bak
